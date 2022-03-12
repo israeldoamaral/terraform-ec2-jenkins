@@ -235,7 +235,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_network"></a> [network](#module\_network) | github.com/israeldoamaral/terraform-vpc-aws | n/a |
+| <a name="module_network"></a> [network](https://github.com/israeldoamaral/terraform-vpc-aws\_network) | github.com/israeldoamaral/terraform-vpc-aws | n/a |
 | <a name="module_security_group"></a> [security_group](#module\_security_group) | github.com/israeldoamaral/terraform-sg-aws | n/a |
 | <a name="module_security_group"></a> [security_group](#module\_security_group) | github.com/israeldoamaral/terraform-sg-aws | n/a |
 
