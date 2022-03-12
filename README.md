@@ -236,6 +236,7 @@ No providers.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_network"></a> [network](#module\_network) | github.com/marcio-machado76/terraform_aws_vpc | n/a |
+| <a name="module_security_group"></a> [security_group](#module\_security_group) | github.com/marcio-machado76/terraform_sg_vpc | n/a |
 
 ## Resources
 
