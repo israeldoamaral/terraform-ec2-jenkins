@@ -74,7 +74,7 @@ module "ec2" {
 }
 
 
-resource "null_resource" "example_provisioner" {
+resource "null_resource" "get_inicialpassword_jenkins_provisioner" {
   triggers = {
     public_ip = module.ec2.public_ip
   }
@@ -87,22 +87,22 @@ resource "null_resource" "example_provisioner" {
     agent = true
   }
 
-  // copy our example script to the server
+  // copia o script que pega a senha inicial do Jenkins para o servidor ec2 criado anteriormente
   provisioner "file" {
     source      = "files/get-InitialPassword.sh"
     destination = "/tmp/get-InitialPassword.sh"
   }
 
-  // change permissions to executable and pipe its output into a new file
+  // Modifica as permissões do script para executável. Logo em seguida executa o script e envia a resposta para um novo arquivo.
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/get-InitialPassword.sh",
       "sudo /tmp/get-InitialPassword.sh > /tmp/InitialPassword",
     ]
   }
-
+  
+  // Executa o scp para pegar o arquivo gerado com a senha inicial do jenkins e copia para um novo arquivo chamado InitialPassword na pasta root do projeto.
   provisioner "local-exec" {
-    # copy the public-ip file back to CWD, which will be tested
     command = "scp -i ${module.ssh-key.key_name}.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${module.ec2.public_ip}:/tmp/InitialPassword InitialPassword"
   }
 
@@ -112,7 +112,7 @@ resource "null_resource" "example_provisioner" {
 }
 ```
 #
-<summary>variables.tf - Arquivo que contém as variáveis que o módulo irá utilizar e pode ter os valores alterados de acordo com a necessidade.</summary>
+<summary>variables.tf - Arquivo que contém as variáveis que os módulo irão utilizar e podem ter os valores alterados de acordo com a necessidade.</summary>
 
 ```hcl
 variable "region" {
@@ -136,20 +136,9 @@ variable "count_available" {
 variable "tag_vpc" {
   description = "Tag Name da VPC"
   type        = string
-  default     = "VPC-name"
+  default     = "Jenkins"
 }
 
-variable "tag_igw" {
-  description = "Tag Name do internet gateway"
-  type        = string
-  default     = "gw-name"
-}
-
-variable "tag_rtable" {
-  description = "Tag Name das route tables"
-  type        = string
-  default     = "rt-name"
-}
 
 variable "nacl" {
   description = "Regras de Network Acls AWS"
@@ -162,25 +151,72 @@ variable "nacl" {
   }
 }
 
+
+variable "sg-cidr" {
+  description = "Mapa de portas de serviços"
+  # type        = map(object({ protocol = string, action = string, cidr_blocks = string, from_port = number, to_port = number }))
+  default = {
+    22   = { to_port = 22, description = "Entrada ssh", protocol = "tcp", cidr_blocks = ["0.0.0.0/0"] }
+    8080 = { to_port = 8080, description = "Entrada custom para app", protocol = "tcp", cidr_blocks = ["0.0.0.0/0"] }
+  }
+}
+
+
 ```
 #
-<summary>outputs.tf - Outputs de recursos que serão utilizados em outros módulos.</summary>
+<summary>outputs.tf - Outputs de recursos que poderão ser utilizados em outros módulos.</summary>
 
 ```hcl
 output "vpc" {
   description = "Idendificador da VPC"
   value       = module.network.vpc
+
 }
 
 output "public_subnet" {
   description = "Subnet public "
   value       = module.network.public_subnet
+
 }
 
 output "private_subnet" {
   description = "Subnet private "
   value       = module.network.private_subnet
+
 }
+
+
+output "security_Group" {
+  description = "Security Group"
+  value       = module.security_group.security_group_id
+
+}
+
+
+output "ssh_keypair" {
+  value = module.ssh-key.ssh_keypair
+  sensitive = true
+
+}
+
+
+output "key_name" {
+  value = module.ssh-key.key_name
+
+}
+
+output "IP_Jenkins" {
+  description = "Retorna o ip da instancia Jenkins"
+  value = format("%s:8080",module.ec2.public_ip)
+
+}
+
+output "ec2_ip" {
+  description = "Retorna o ip da instancia"
+  value = module.ec2.public_ip
+
+}
+
 
 ```
 
