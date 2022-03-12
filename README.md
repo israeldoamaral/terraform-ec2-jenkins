@@ -1,42 +1,114 @@
 # terraform-ec2-jenkins
 - [x] Status:  Ainda em desenvolvimento.
 ###
-### Módulo para criar um servidor Jenkins na AWS composta dos recursos, Vpc, subnets (publicas e privadas), network Acls, route tables e internet gateway e Ec2.
-Para utilizar este módulo é necessário os seguintes arquivos especificados logo abaixo:
+### Projeto para criar um servidor Jenkins na AWS composto dos módulos Vpc, Security_Group, ssh-key e EC2.
+Para utilizar este projeto são necessários os seguintes arquivos especificados logo abaixo:
 
    <summary>versions.tf - Arquivo com as versões dos providers.</summary>
 
 ```hcl
 terraform {
-    required_version = "~> 0.15.4"
+    required_version = ">= 0.15.4"
 
     required_providers {
         aws = {
         source  = "hashicorp/aws"
-        version = "~> 3.0"
+        version = ">= 3.0"
         }
     }
  }
 ```
 #
-<summary>main.tf - Arquivo que irá consumir o módulo para criar a infraestrutura.</summary>
+<summary>main.tf - Arquivo que irá consumir os módulos para criar a infraestrutura necessária para o projeto.</summary>
 
 ```hcl
 provider "aws" {
-  region  = var.region
+  region = var.region
 }
 
 
 module "network" {
-  source          = "git::https://github.com/marcio-machado76/terraform_aws_vpc"
+  source          = "git::https://github.com/israeldoamaral/terraform-vpc-aws"
   region          = var.region
   cidr            = var.cidr
   count_available = var.count_available
   vpc             = module.network.vpc
-  tag_vpc         = var.tag_vpc
-  tag_igw         = var.tag_igw
-  tag_rtable      = var.tag_rtable
+  tag_vpc         = "Jenkins" #var.tag_vpc
   nacl            = var.nacl
+}
+
+
+module "security_group" {
+  source  = "git::https://github.com/israeldoamaral/terraform-sg-aws"
+  vpc     = module.network.vpc
+  sg-cidr = var.sg-cidr
+  tag-sg = "Jenkins"
+
+}
+
+
+module "ssh-key" {
+  source    = "git::https://github.com/israeldoamaral/terraform-sshkey-aws"
+  namespace = "Jenkins" #var.namespace
+
+  depends_on = [
+    module.network
+  ]
+}
+
+
+module "ec2" {
+  source         = "git::https://github.com/israeldoamaral/terraform-ec2-aws"
+  ami_id         = "ami-04505e74c0741db8d"
+  instance_type  = "t2.micro"
+  subnet_id      = module.network.public_subnet[0]
+  security_group = module.security_group.security_group_id
+  key_name       = module.ssh-key.key_name
+  userdata       = "files/install_jenkins_docker.sh"
+  tag_name       = "Jenkins"
+
+  depends_on = [
+    module.network
+  ]
+  
+}
+
+
+resource "null_resource" "example_provisioner" {
+  triggers = {
+    public_ip = module.ec2.public_ip
+  }
+
+  connection {
+    type  = "ssh"
+    host  = module.ec2.public_ip
+    user  = "ubuntu"
+    private_key = file("${module.ssh-key.key_name}.pem")
+    agent = true
+  }
+
+  // copy our example script to the server
+  provisioner "file" {
+    source      = "files/get-InitialPassword.sh"
+    destination = "/tmp/get-InitialPassword.sh"
+  }
+
+  // change permissions to executable and pipe its output into a new file
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/get-InitialPassword.sh",
+      "sudo /tmp/get-InitialPassword.sh > /tmp/InitialPassword",
+    ]
+  }
+
+  provisioner "local-exec" {
+    # copy the public-ip file back to CWD, which will be tested
+    command = "scp -i ${module.ssh-key.key_name}.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${module.ec2.public_ip}:/tmp/InitialPassword InitialPassword"
+  }
+
+  depends_on = [
+    module.ec2
+  ]
 }
 ```
 #
