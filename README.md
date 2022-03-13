@@ -266,6 +266,9 @@ No resources.
   - Para utilizar crie os arquivos mencionados no inicio e copie e cole os respectivos conteudos ou simplemente clone o repositório
     * `git clone https://github.com/israeldoamaral/terraform-ec2-jenkins.git`
     
+  - Acesse a pasta que foi clonada ou criada por você.
+    * `cd terraform-ec2-jenkins`
+     
   - Após criar os arquivos ou clonar o repositŕio, altere os valores default das variáveis, pois podem ser alterados de acordo com sua necessidade. 
   - A variável `count_available` define o quantidade de zonas de disponibilidade, públicas e privadas que seram criadas nessa Vpc.
   - Certifique-se que possua as credenciais da AWS - **`AWS_ACCESS_KEY_ID`** e **`AWS_SECRET_ACCESS_KEY`**.
