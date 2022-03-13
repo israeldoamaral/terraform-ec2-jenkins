@@ -299,7 +299,7 @@ Agora é só executar os comandos do terraform:
 - Para aplicar a criação/alteração dos recursos. 
 * `terraform apply plano` 
 
-
+#
 ## Outputs
 
 - Será retornado após a criação os valores de exemplo:
@@ -326,9 +326,8 @@ ssh_keypair = <sensitive>
 
 vpc = "vpc-09daf8cfd78900bbf"
 
-
-## Após terminar o processo será gerado um arquivo no root da pasta chamado "InitialPassword" onde contem a chave inicial de acesso do Jenkins.
-## Copie e acesse a url do Jenkins
+#
+## Após terminar o processo será gerado um arquivo no root da pasta chamado "InitialPassword" onde contem a chave inicial de acesso do Jenkins. Copie e acesse a url do Jenkins
 
    
    
