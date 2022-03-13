@@ -263,14 +263,15 @@ No resources.
 
 #
 ## Como usar.
-  - Para utilizar clone o repositório.
-    * `docker run -it --rm -v $PWD:/app -w /app --entrypoint "" hashicorp/terraform:light sh` 
-  - Após criar os arquivos, atente-se aos valores default das variáveis, pois podem ser alterados de acordo com sua necessidade. 
+  - Para utilizar crie os arquivos mencionados no inicio e copie e cole os respectivos conteudos ou simplemente clone o repositório
+    * `git clone https://github.com/israeldoamaral/terraform-ec2-jenkins.git`
+    
+  - Após criar os arquivos ou clonar o repositŕio, altere os valores default das variáveis, pois podem ser alterados de acordo com sua necessidade. 
   - A variável `count_available` define o quantidade de zonas de disponibilidade, públicas e privadas que seram criadas nessa Vpc.
   - Certifique-se que possua as credenciais da AWS - **`AWS_ACCESS_KEY_ID`** e **`AWS_SECRET_ACCESS_KEY`**.
 
 ### Comandos
-Para consumir os módulos deste repositório é necessário ter o terraform instalado ou utilizar o container do terraform dentro da pasta do seu projeto da seguinte forma:
+Para iniciar é necessário ter o terraform instalado ou utilizar o container do terraform dentro da pasta do seu projeto da seguinte forma:
 
 * `docker run -it --rm -v $PWD:/app -w /app --entrypoint "" hashicorp/terraform:light sh` 
     
@@ -284,6 +285,6 @@ Agora é só executar os comandos do terraform:
 * `terraform init` - Comando irá baixar todos os modulos e plugins necessários.
 * `terraform fmt` - Para verificar e formatar a identação dos arquivos.
 * `terraform validate` - Para verificar e validar se o código esta correto.
-* `terraform plan` - Para criar um plano de todos os recursos que serão utilizados.
-* `terraform apply` - Para aplicar a criação/alteração dos recursos. 
+* `terraform plan --out plano` - Para criar um plano de todos os recursos que serão utilizados.
+* `terraform apply plano` - Para aplicar a criação/alteração dos recursos. 
 * `terraform destroy` - Para destruir todos os recursos que foram criados pelo terraform. 
