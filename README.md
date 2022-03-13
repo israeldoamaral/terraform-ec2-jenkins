@@ -244,17 +244,22 @@ No providers.
 
 No resources.
 
-## Inputs
+## Inputs 
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cidr"></a> [cidr](#input\_cidr) | CIDR da VPC, exemplo "10.0.0.0/16" | `string` | `" "` | no |
-| <a name="input_count_available"></a> [count\_available](#input\_count\_available) | Numero de Zonas de disponibilidade | `number` | `2` | no |
+| <a name="input_region"></a> [region](#input\_region) | Região na AWS onde sera criado toda a infra | `string` | `"us-east-1"` | yes |
+| <a name="input_cidr"></a> [cidr](#input\_cidr) | CIDR block da VPC.  | `string` | `"10.0.0.0/16"` | yes |
+| <a name="input_count_available"></a> [count\_available](#input\_count\_available) | Numero de Zonas de disponibilidade | `number` | `2` | yes |
 | <a name="input_nacl"></a> [nacl](#input\_nacl) | Regras de Network Acls AWS | `map(object)` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | Região na AWS, exemplo "us-east-1" | `string` | `" "` | no |
-| <a name="input_tag_igw"></a> [tag\_igw](#input\_tag\_igw) | Tag Name do internet gateway | `string` | `""` | no |
-| <a name="input_tag_rtable"></a> [tag\_rtable](#input\_tag\_rtable) | Tag Name das route tables | `string` | `""` | no |
-| <a name="input_tag_vpc"></a> [tag\_vpc](#input\_tag\_vpc) | Tag Name da VPC | `string` | `""` | no |
+| <a name="input_tag_vpc"></a> [tag\_vpc](#input\_tag\_vpc) | Tag Name da VPC | `string` | `""` | yes |
+| <a name="input_sg-cidr"></a> [sg-cidr](#input\sg-cidr) | Portas a serem liberadas para a instancia | `map(object)` | `""` | yes |
+| <a name="input_namespace"></a> [namespace](#input\namespace) | Nome da chave ssh  | `string` | `""` | yes |
+| <a name="input_ami_id"></a> [ami_id](#input\ami_id) | ID da AMI  | `string` | `""` | yes |
+| <a name="input_instance_type"></a> [instance_type](#input\instance_type) | Nome da Instancia ec2  | `string` | `""` | yes |
+| <a name="input_userdata"></a> [userdata](#input\userdata) | Caminho/arquivo que será aplicado para instalar o Jenkins  | `string` | `""` | yes |
+| <a name="input_tag_name"></a> [tag_name](#input\tag_name) | Nome da Tag para instancia ec2  | `string` | `""` | yes |
+
 
 ## Outputs
 
