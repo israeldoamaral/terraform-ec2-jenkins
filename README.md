@@ -263,31 +263,74 @@ No resources.
 
 #
 ## Como usar.
-  - Para utilizar crie os arquivos mencionados no inicio e copie e cole os respectivos conteudos ou simplemente clone o repositório
-    * `git clone https://github.com/israeldoamaral/terraform-ec2-jenkins.git`
-    
+  - Para utilizar clone o repositório
   - Acesse a pasta que foi clonada ou criada por você.
-    * `cd terraform-ec2-jenkins`
-     
-  - Após criar os arquivos ou clonar o repositŕio, altere os valores default das variáveis, pois podem ser alterados de acordo com sua necessidade. 
+  - Após clonar o repositŕio, altere os valores default das variáveis, pois podem ser alterados de acordo com sua necessidade. 
   - A variável `count_available` define o quantidade de zonas de disponibilidade, públicas e privadas que seram criadas nessa Vpc.
   - Certifique-se que possua as credenciais da AWS - **`AWS_ACCESS_KEY_ID`** e **`AWS_SECRET_ACCESS_KEY`**.
 
 ### Comandos
-Para iniciar é necessário ter o terraform instalado ou utilizar o container do terraform dentro da pasta do seu projeto da seguinte forma:
-
-* `docker run -it --rm -v $PWD:/app -w /app --entrypoint "" hashicorp/terraform:light sh` 
-    
-Em seguida exporte as credenciais da AWS:
-
+- Exporte as credenciais da AWS:
 * `export AWS_ACCESS_KEY_ID=sua_access_key_id`
 * `export AWS_SECRET_ACCESS_KEY=sua_secret_access_key`
+
+- Clone o repositório:
+* `git clone https://github.com/israeldoamaral/terraform-ec2-jenkins.git`
+
+- Acesse a pasta clonada:
+* `cd terraform-ec2-jenkins`
+
+Para iniciar é necessário ter o terraform instalado ou utilizar o container do terraform dentro da pasta do seu projeto da seguinte forma:
+* `docker run -it --rm -v $PWD:/app -w /app --entrypoint "" hashicorp/terraform:light sh` 
     
 Agora é só executar os comandos do terraform:
+- Comando irá baixar todos os modulos e plugins necessários.
+* `terraform init` 
 
-* `terraform init` - Comando irá baixar todos os modulos e plugins necessários.
-* `terraform fmt` - Para verificar e formatar a identação dos arquivos.
-* `terraform validate` - Para verificar e validar se o código esta correto.
-* `terraform plan --out plano` - Para criar um plano de todos os recursos que serão utilizados.
-* `terraform apply plano` - Para aplicar a criação/alteração dos recursos. 
-* `terraform destroy` - Para destruir todos os recursos que foram criados pelo terraform. 
+- Para verificar e formatar a identação dos arquivos.
+* `terraform fmt` 
+
+- Para verificar e validar se o código esta correto.
+* `terraform validate` 
+
+- Para criar um plano de todos os recursos que serão utilizados.
+* `terraform plan --out plano` 
+
+- Para aplicar a criação/alteração dos recursos. 
+* `terraform apply plano` 
+
+
+## Outputs
+
+- Será retornado após a criação os valores de exemplo:
+
+Url_Jenkins = "34.207.86.109:8080"
+
+ec2_ip = "34.207.86.109"
+
+key_name = "Jenkins-key"
+
+private_subnet = [
+  "subnet-0eb121e45013f13fd",
+  "subnet-0689ed2d6d0379905",
+]
+
+public_subnet = [
+  "subnet-004ed3dfa620f64e9",
+  "subnet-098d99002b2cfbe9d",
+]
+
+security_Group = "sg-01e0d1528e3c2c758"
+
+ssh_keypair = <sensitive>
+
+vpc = "vpc-09daf8cfd78900bbf"
+
+
+## Após terminar o processo será gerado um arquivo no root da pasta chamado "InitialPassword" onde contem a chave inicial de acesso do Jenkins.
+## Copie e acesse a url do Jenkins
+
+   
+   
+- Para destruir todos os recursos que foram criados pelo terraform. 
+* `terraform destroy` 
