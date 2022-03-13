@@ -41,8 +41,8 @@
 
 #
 ## Como usar.
-  - Para utilizar clone o repositório
-  - Acesse a pasta que foi clonada ou criada por você.
+  - Para utilizar clone o repositório.
+  - Acesse a pasta que foi clonada.
   - Após clonar o repositŕio, altere os valores default das variáveis, pois podem ser alterados de acordo com sua necessidade. 
   - A variável `count_available` define o quantidade de zonas de disponibilidade, públicas e privadas que seram criadas nessa Vpc.
   - Certifique-se que possua as credenciais da AWS - **`AWS_ACCESS_KEY_ID`** e **`AWS_SECRET_ACCESS_KEY`**.
