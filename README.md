@@ -261,12 +261,10 @@ No resources.
 | <a name="input_tag_name"></a> [tag_name](#input\tag_name) | Nome da Tag para instancia ec2  | `string` | `""` | yes |
 
 
-## Outputs
-
-No outputs.
 #
 ## Como usar.
-  - Para utilizar localmente crie os arquivos descritos no começo deste tutorial, main.tf, versions.tf, variables.tf e outputs.tf.
+  - Para utilizar clone o repositório.
+    * `docker run -it --rm -v $PWD:/app -w /app --entrypoint "" hashicorp/terraform:light sh` 
   - Após criar os arquivos, atente-se aos valores default das variáveis, pois podem ser alterados de acordo com sua necessidade. 
   - A variável `count_available` define o quantidade de zonas de disponibilidade, públicas e privadas que seram criadas nessa Vpc.
   - Certifique-se que possua as credenciais da AWS - **`AWS_ACCESS_KEY_ID`** e **`AWS_SECRET_ACCESS_KEY`**.
