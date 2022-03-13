@@ -36,7 +36,7 @@ output "key_name" {
 
 }
 
-output "IP_Jenkins" {
+output "Url_Jenkins" {
   description = "Retorna o ip da instancia Jenkins"
   value = format("%s:8080",module.ec2.public_ip)
 
