@@ -48,9 +48,6 @@
   - Certifique-se que possua as credenciais da AWS - **`AWS_ACCESS_KEY_ID`** e **`AWS_SECRET_ACCESS_KEY`**.
 
 ### Comandos
-- Exporte as credenciais da AWS:
-* `export AWS_ACCESS_KEY_ID=sua_access_key_id`
-* `export AWS_SECRET_ACCESS_KEY=sua_secret_access_key`
 
 - Clone o repositório:
 * `git clone https://github.com/israeldoamaral/terraform-ec2-jenkins.git`
@@ -60,7 +57,11 @@
 
 Para iniciar é necessário ter o terraform instalado ou utilizar o container do terraform dentro da pasta do seu projeto da seguinte forma:
 * `docker run -it --rm -v $PWD:/app -w /app --entrypoint "" hashicorp/terraform:light sh` 
-    
+
+- Exporte as credenciais da AWS:
+* `export AWS_ACCESS_KEY_ID=sua_access_key_id`
+* `export AWS_SECRET_ACCESS_KEY=sua_secret_access_key`
+
 Agora é só executar os comandos do terraform:
 - Comando irá baixar todos os modulos e plugins necessários.
 * `terraform init` 
